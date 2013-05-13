@@ -6,10 +6,10 @@
 //called) on jQuery-wrapped HTML DOM elements.
 jQuery.fn.mathquill = function(cmd, latex) {
   switch (cmd) {
-  case 'redraw':
+    case 'redraw':
     return this.each(function() {
       var blockId = $(this).attr(mqBlockId),
-        rootBlock = blockId && MathElement[blockId];
+      rootBlock = blockId && MathElement[blockId];
       if (rootBlock) {
         (function postOrderRedraw(el) {
           el.eachChild(postOrderRedraw);
@@ -17,51 +17,51 @@ jQuery.fn.mathquill = function(cmd, latex) {
         }(rootBlock));
       }
     });
-  case 'revert':
+    case 'revert':
     return this.each(function() {
       var blockId = $(this).attr(mqBlockId),
-        block = blockId && MathElement[blockId];
+      block = blockId && MathElement[blockId];
       if (block && block.revert)
         block.revert();
     });
-  case 'latex':
+    case 'latex':
     if (arguments.length > 1) {
       return this.each(function() {
         var blockId = $(this).attr(mqBlockId),
-          block = blockId && MathElement[blockId];
+        block = blockId && MathElement[blockId];
         if (block)
           block.renderLatex(latex);
       });
     }
 
     var blockId = $(this).attr(mqBlockId),
-      block = blockId && MathElement[blockId];
+    block = blockId && MathElement[blockId];
     return block && block.latex();
-  case 'text':
+    case 'text':
     var blockId = $(this).attr(mqBlockId),
-      block = blockId && MathElement[blockId];
+    block = blockId && MathElement[blockId];
     return block && block.text();
-  case 'html':
+    case 'html':
     return this.html().replace(/ ?hasCursor|hasCursor /, '')
-      .replace(/ class=(""|(?= |>))/g, '')
-      .replace(/<span class="?cursor( blink)?"?><\/span>/i, '')
-      .replace(/<span class="?textarea"?><textarea><\/textarea><\/span>/i, '');
-  case 'write':
+    .replace(/ class=(""|(?= |>))/g, '')
+    .replace(/<span class="?cursor( blink)?"?><\/span>/i, '')
+    .replace(/<span class="?textarea"?><textarea><\/textarea><\/span>/i, '');
+    case 'write':
     if (arguments.length > 1)
       return this.each(function() {
         var blockId = $(this).attr(mqBlockId),
-          block = blockId && MathElement[blockId],
-          cursor = block && block.cursor;
+        block = blockId && MathElement[blockId],
+        cursor = block && block.cursor;
 
         if (cursor)
           cursor.writeLatex(latex).parent.blur();
       });
-  case 'cmd':
+    case 'cmd':
     if (arguments.length > 1)
       return this.each(function() {
         var blockId = $(this).attr(mqBlockId),
-          block = blockId && MathElement[blockId],
-          cursor = block && block.cursor;
+        block = blockId && MathElement[blockId],
+        cursor = block && block.cursor;
 
         if (cursor) {
           var seln = cursor.prepareWrite();
@@ -70,14 +70,32 @@ jQuery.fn.mathquill = function(cmd, latex) {
           cursor.hide().parent.blur();
         }
       });
-  default:
+    default:
     var textbox = cmd === 'textbox',
-      editable = textbox || cmd === 'editable',
-      RootBlock = textbox ? RootTextBlock : RootMathBlock;
+    editable = textbox || cmd === 'editable',
+    RootBlock = textbox ? RootTextBlock : RootMathBlock;
     return this.each(function() {
       createRoot($(this), RootBlock(), textbox, editable);
     });
   }
+};
+
+/**
+ * Sets the matrix size that will be output by the '\\matrix' command. {@code MatrixSize} is a
+ * variable that points to the {@code LatexCmds.matrix->setSize} method (NOTE: There are a bunch
+ * of closures in play which is why we can't simply call {@code LatexCmds.matrix.setSize(..)}).
+ * The {@code MatrixSize} variable is defined in the {@code commands.js} file.
+ *
+ * Ensure to call this function BEFORE inserting a '\\matrix' command.
+ *
+ * The {@code MathQuill} object is defined in the intro.js file outside the anonymous function
+ * declaration in order to make it visible publically.
+ *
+ * @param rows the number of rows in the matrix
+ * @param cols the number of columns in the matrix
+ */
+MathQuill.setMatrixSize = function(rows, cols) {
+  MatrixSize(rows, cols);
 };
 
 //on document ready, mathquill-ify all `<tag class="mathquill-*">latex</tag>`

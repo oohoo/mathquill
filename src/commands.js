@@ -287,6 +287,45 @@ LatexCmds.nthroot = P(SquareRoot, function(_, _super) {
   };
 });
 
+var Vec =
+LatexCmds.vec =
+LatexCmds['vec'] = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\vec';
+  _.htmlTemplate =
+      '<span class="non-leaf">'
+    +   '<span class="vector-prefix">&rarr;</span>'
+    +   '<span class="vector-stem">&0</span>'
+    + '</span>'
+  ;
+  _.textTemplate = ['vec{', '}'];
+});
+
+var Vec =
+LatexCmds.vec =
+LatexCmds['vec'] = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\vec';
+  _.htmlTemplate =
+      '<span class="non-leaf">'
+    +   '<span class="vector-prefix">&rarr;</span>'
+    +   '<span class="vector-stem">&0</span>'
+    + '</span>'
+  ;
+  _.textTemplate = ['vec{', '}'];
+});
+
+var Hat =
+LatexCmds.hat =
+LatexCmds['hat'] = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\hat';
+  _.htmlTemplate =
+      '<span class="non-leaf">'
+    +   '<span class="hat-prefix">&#94;</span>'
+    +   '<span class="vector-stem">&0</span>'
+    + '</span>'
+  ;
+  _.textTemplate = ['hat{', '}'];
+});
+
 // Round/Square/Curly/Angle Brackets (aka Parens/Brackets/Braces)
 var Bracket = P(MathCommand, function(_, _super) {
   _.init = function(open, close, ctrlSeq, end) {
@@ -360,6 +399,8 @@ LatexCmds.lbrace =
 CharCmds['{'] = bind(Bracket, '{', '}', '\\{', '\\}');
 LatexCmds.langle =
 LatexCmds.lang = bind(Bracket, '&lang;','&rang;','\\langle ','\\rangle ');
+LatexCmds.lceil = bind(Bracket, '&#x2308;','&#x2309;','\\lceil ','\\rceil ');
+LatexCmds.lfloor = bind(Bracket, '&#x230A;','&#x230B;','\\lceil ','\\rceil ');
 
 // Closing bracket matching opening bracket above
 var CloseBracket = P(Bracket, function(_, _super) {
@@ -382,6 +423,8 @@ LatexCmds.rbrace =
 CharCmds['}'] = bind(CloseBracket, '{','}','\\{','\\}');
 LatexCmds.rangle =
 LatexCmds.rang = bind(CloseBracket, '&lang;','&rang;','\\langle ','\\rangle ');
+LatexCmds.rceil = bind(Bracket, '&#x2308;','&#x2309;','\\lceil ','\\rceil ');
+LatexCmds.rfloor = bind(Bracket, '&#x230A;','&#x230B;','\\lceil ','\\rceil ');
 
 var parenMixin = function(_, _super) {
   _.init = function(open, close) {
@@ -706,6 +749,51 @@ LatexCmds.binomial = P(MathCommand, function(_, _super) {
 
     var parens = this.jQ.filter('.paren');
     scale(parens, min(1 + .2*(height - 1), 1.2), 1.05*height);
+  };
+});
+
+// Pointer to the setSize() function in order to make it more easily accessible outside the closure
+var MatrixSize = null;
+var Matrix =
+LatexCmds.matrix = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\matrix';
+  _.htmlTemplate =
+    '<table class="mtable non-leaf">'
+    +   '<tr class="mtr non-leaf">'
+    +     '<td class="mtd"><span>&0</span></td>'
+    +     '<td class="mtd"><span>&1</span></td>'
+    +   '</tr>'
+    +   '<tr class="mtr non-leaf">'
+    +     '<td class="mtd"><span>&2</span></td>'
+    +     '<td class="mtd"><span>&3</span></td>'
+    +   '</tr>'
+    + '</table>'
+  ;
+  _.latex = function() {
+    return '\\begin{matrix}' + this.foldChildren([], function(latex, child) {
+      latex.push(child.latex());
+      return latex;
+    }).join('\\\\') + '\\end{matrix}';
+  };
+  _.text = function() {
+    return '[' + this.foldChildren([], function(text, child) {
+      text.push(child.text());
+      return text;
+    }).join() + ']';
+  };
+  _.setSize = MatrixSize = function(rows, columns) {
+    var matrix = '<table class="mtable non-leaf">';
+    var count = 0;
+    for(var row = 0; row < rows; row++) {
+      matrix += '<tr class="mtr non-leaf">';
+      for(var col = 0; col < columns; col++) {
+        matrix += '<td class="mtd"><span>&' + count + '</span></td>';
+        count++;
+      }
+      matrix += '</tr>';
+    }
+    matrix += '</table>';
+    _.htmlTemplate = matrix;
   };
 });
 

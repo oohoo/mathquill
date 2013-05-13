@@ -5,6 +5,10 @@
  * Project Website: http://mathquill.com
  */
 
+// Static utility function holder, this is preffered over storing static functions on the jquery
+// object
+var MathQuill = {};
+
 (function() {
 
 var jQuery = window.jQuery,

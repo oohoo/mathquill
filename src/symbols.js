@@ -353,6 +353,10 @@ LatexCmds.complexplane = LatexCmds.Complexplane = LatexCmds.ComplexPlane =
 LatexCmds.H = LatexCmds.Hamiltonian = LatexCmds.quaternions = LatexCmds.Quaternions =
   bind(VanillaSymbol,'\\mathbb{H}','&#8461;');
 
+LatexCmds.I =
+LatexCmds.irrational = LatexCmds.Irrational =
+LatexCmds.irrationals = LatexCmds.Irrationals = bind(VanillaSymbol,'\\mathbb{I}','&#x1D540;');
+
 //spacing
 LatexCmds.quad = LatexCmds.emsp = bind(VanillaSymbol,'\\quad ','    ');
 LatexCmds.qquad = bind(VanillaSymbol,'\\qquad ','        ');
@@ -459,10 +463,10 @@ LatexCmds.bigoplus = bind(VanillaSymbol, '\\bigoplus ', '&#8853;');
 LatexCmds.biguplus = bind(VanillaSymbol, '\\biguplus ', '&#8846;');
 
 //delimiters
-LatexCmds.lfloor = bind(VanillaSymbol, '\\lfloor ', '&#8970;');
-LatexCmds.rfloor = bind(VanillaSymbol, '\\rfloor ', '&#8971;');
-LatexCmds.lceil = bind(VanillaSymbol, '\\lceil ', '&#8968;');
-LatexCmds.rceil = bind(VanillaSymbol, '\\rceil ', '&#8969;');
+//LatexCmds.lfloor = bind(VanillaSymbol, '\\lfloor ', '&#8970;');
+//LatexCmds.rfloor = bind(VanillaSymbol, '\\rfloor ', '&#8971;');
+//LatexCmds.lceil = bind(VanillaSymbol, '\\lceil ', '&#8968;');
+//LatexCmds.rceil = bind(VanillaSymbol, '\\rceil ', '&#8969;');
 LatexCmds.slash = bind(VanillaSymbol, '\\slash ', '&#47;');
 LatexCmds.opencurlybrace = bind(VanillaSymbol, '\\opencurlybrace ', '&#123;');
 LatexCmds.closecurlybrace = bind(VanillaSymbol, '\\closecurlybrace ', '&#125;');

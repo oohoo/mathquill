@@ -244,8 +244,50 @@
     margin-right: .1em;
   }
 
+  .vector-prefix {
+    display: block;
+    text-align: center;
+    line-height: .25em;
+    margin-bottom: -.1em;
+    font-size: 0.75em;
+  }  
+
+  .vector-stem {
+    display: block;
+    text-align: center;
+    position: relative;
+    border-top: none;
+  }
+
+  .hat-prefix {
+    display: block;
+    text-align: center;
+    line-height: .15em;
+    margin-bottom: -0.35em;
+    font-size: 0.90em;
+  }
+
   &, .mathquill-editable {
     cursor: text;
     font-family: @symbola;
   }
+
+  .mtable {
+    text-align: center;
+    display: inline-table;
+  }
+
+  .mtr {
+    margin: .2em 0;
+    display: table-row !important;
+    display: block;
+  }
+
+  .mtd {
+    white-space: nowrap;
+    padding: 0 .1em;
+    display:table-cell !important;
+    display:inline-block;
+  }
+
 }
