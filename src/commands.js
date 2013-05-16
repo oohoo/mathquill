@@ -364,7 +364,6 @@ LatexCmds.left = P(MathCommand, function(_) {
 
     return optWhitespace.then(regex(/^(?:[([|]|\\\{|\\langle|\\lceil|\\lfloor)/))
       .then(function(open) {
-        console.log(open);
         if (open.charAt(0) === '\\') open = open.slice(1);
 
         var cmd = CharCmds[open]();
@@ -381,10 +380,8 @@ LatexCmds.left = P(MathCommand, function(_) {
               // This case is fine, accepts special characters like 'langle' and 'rangle'
             }
             else if (close.slice(-1) !== cmd.end.slice(-1)) {
-              console.log('fail');
               return Parser.fail('open doesn\'t match close');
             }
-            console.log(succeed(cmd));
             return succeed(cmd);
           })
         ;
