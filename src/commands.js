@@ -770,10 +770,23 @@ LatexCmds.matrix = P(MathCommand, function(_, _super) {
     + '</table>'
   ;
   _.latex = function() {
-    return '\\begin{matrix}' + this.foldChildren([], function(latex, child) {
+    var children = this.foldChildren([], function(latex, child) {
       latex.push(child.latex());
       return latex;
-    }).join('\\\\') + '\\end{matrix}';
+    });
+    var string = '\\begin{matrix}';
+    for(var i = 0; i < children.length; i++) {
+      if(i % _.columns == 0 && i != 0) {
+        string += '\\\\';
+      }
+      string += children[i];
+      // Don't append an ampersand at the end of the row
+      if((i + 1) % _.columns != 0) {
+        string += '&';
+      }
+    }
+    string += '\\end{matrix}';
+    return string;
   };
   _.text = function() {
     return '[' + this.foldChildren([], function(text, child) {
@@ -782,6 +795,7 @@ LatexCmds.matrix = P(MathCommand, function(_, _super) {
     }).join() + ']';
   };
   _.setSize = MatrixSize = function(rows, columns) {
+    _.columns = columns;
     var matrix = '<table class="mtable non-leaf">';
     var count = 0;
     for(var row = 0; row < rows; row++) {
