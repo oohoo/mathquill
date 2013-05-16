@@ -362,8 +362,9 @@ LatexCmds.left = P(MathCommand, function(_) {
     var succeed = Parser.succeed;
     var optWhitespace = Parser.optWhitespace;
 
-    return optWhitespace.then(regex(/^(?:[([|]|\\\{)/))
+    return optWhitespace.then(regex(/^(?:[([|]|\\\{|\\langle|\\lceil|\\lfloor)/))
       .then(function(open) {
+        console.log(open);
         if (open.charAt(0) === '\\') open = open.slice(1);
 
         var cmd = CharCmds[open]();
@@ -374,13 +375,16 @@ LatexCmds.left = P(MathCommand, function(_) {
             block.adopt(cmd, 0, 0);
           })
           .then(string('\\right'))
-          .skip(optWhitespace)
-          .then(regex(/^(?:[\])|]|\\\})/))
+          .then(regex(/^(?:[\])|]|\\\}|\\rangle|\\rceil|\\rfloor)/))
           .then(function(close) {
-            if (close.slice(-1) !== cmd.end.slice(-1)) {
+            if (jQuery.trim(close) == jQuery.trim(cmd.end.replace('\\right', ''))) {
+              // This case is fine, accepts special characters like 'langle' and 'rangle'
+            }
+            else if (close.slice(-1) !== cmd.end.slice(-1)) {
+              console.log('fail');
               return Parser.fail('open doesn\'t match close');
             }
-
+            console.log(succeed(cmd));
             return succeed(cmd);
           })
         ;
@@ -397,10 +401,10 @@ LatexCmds.right = P(MathCommand, function(_) {
 
 LatexCmds.lbrace =
 CharCmds['{'] = bind(Bracket, '{', '}', '\\{', '\\}');
-LatexCmds.langle =
+CharCmds['langle'] = LatexCmds.langle =
 LatexCmds.lang = bind(Bracket, '&lang;','&rang;','\\langle ','\\rangle ');
-LatexCmds.lceil = bind(Bracket, '&#x2308;','&#x2309;','\\lceil ','\\rceil ');
-LatexCmds.lfloor = bind(Bracket, '&#x230A;','&#x230B;','\\lceil ','\\rceil ');
+CharCmds['lceil'] = LatexCmds.lceil = bind(Bracket, '&#x2308;','&#x2309;','\\lceil ','\\rceil ');
+CharCmds['lfloor'] = LatexCmds.lfloor = bind(Bracket, '&#x230A;','&#x230B;','\\lfloor ','\\rfloor ');
 
 // Closing bracket matching opening bracket above
 var CloseBracket = P(Bracket, function(_, _super) {
@@ -421,10 +425,10 @@ var CloseBracket = P(Bracket, function(_, _super) {
 
 LatexCmds.rbrace =
 CharCmds['}'] = bind(CloseBracket, '{','}','\\{','\\}');
-LatexCmds.rangle =
+CharCmds['rangle'] = LatexCmds.rangle =
 LatexCmds.rang = bind(CloseBracket, '&lang;','&rang;','\\langle ','\\rangle ');
-LatexCmds.rceil = bind(Bracket, '&#x2308;','&#x2309;','\\lceil ','\\rceil ');
-LatexCmds.rfloor = bind(Bracket, '&#x230A;','&#x230B;','\\lceil ','\\rceil ');
+CharCmds['rceil'] = LatexCmds.rceil = bind(Bracket, '&#x2308;','&#x2309;','\\lceil ','\\rceil ');
+CharCmds['rfloor'] = LatexCmds.rfloor = bind(Bracket, '&#x230A;','&#x230B;','\\lfloor ','\\rfloor ');
 
 var parenMixin = function(_, _super) {
   _.init = function(open, close) {
