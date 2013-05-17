@@ -300,19 +300,6 @@ LatexCmds['vec'] = P(MathCommand, function(_, _super) {
   _.textTemplate = ['vec{', '}'];
 });
 
-var Vec =
-LatexCmds.vec =
-LatexCmds['vec'] = P(MathCommand, function(_, _super) {
-  _.ctrlSeq = '\\vec';
-  _.htmlTemplate =
-      '<span class="non-leaf">'
-    +   '<span class="vector-prefix">&rarr;</span>'
-    +   '<span class="vector-stem">&0</span>'
-    + '</span>'
-  ;
-  _.textTemplate = ['vec{', '}'];
-});
-
 var Hat =
 LatexCmds.hat =
 LatexCmds['hat'] = P(MathCommand, function(_, _super) {
@@ -761,12 +748,12 @@ LatexCmds.matrix = P(MathCommand, function(_, _super) {
   _.htmlTemplate =
     '<table class="mtable non-leaf">'
     +   '<tr class="mtr non-leaf">'
-    +     '<td class="mtd"><span>&0</span></td>'
-    +     '<td class="mtd"><span>&1</span></td>'
+    +     '<td class="mtd"><span>a</span></td>'
+    +     '<td class="mtd"><span>b</span></td>'
     +   '</tr>'
     +   '<tr class="mtr non-leaf">'
-    +     '<td class="mtd"><span>&2</span></td>'
-    +     '<td class="mtd"><span>&3</span></td>'
+    +     '<td class="mtd"><span>c</span></td>'
+    +     '<td class="mtd"><span>d</span></td>'
     +   '</tr>'
     + '</table>'
   ;
@@ -809,6 +796,9 @@ LatexCmds.matrix = P(MathCommand, function(_, _super) {
     }
     matrix += '</table>';
     _.htmlTemplate = matrix;
+  };
+  _.parser = function() {
+    console.log('okay');
   };
 });
 

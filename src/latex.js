@@ -45,8 +45,16 @@ var latexMathParser = (function() {
     })
   ;
 
-  var command =
-    controlSequence
+  var matrixCommand =
+    regex(/^\\begin{matrix}.*\\end{matrix}$/)
+    .then(function(a) {
+      console.log('Matrix Command: ' + a);
+      return Parser.succeed(LatexCmds.matrix());
+    })
+  ;
+
+  var command = controlSequence
+    .or(matrixCommand)
     .or(variable)
     .or(symbol)
   ;
