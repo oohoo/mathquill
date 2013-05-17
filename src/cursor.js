@@ -258,12 +258,9 @@ var Cursor = P(Point, function(_) {
     var all = Parser.all;
     var eof = Parser.eof;
 
-    console.log('BEFORE PARSE: ' + latex);
     var block = latexMathParser.skip(eof).or(all.result(false)).parse(latex);
-    console.log('AFTER PARSE: ' + block);
 
     if (block) {
-      console.log('Block OK');
       block.children().adopt(self.parent, self[L], self[R]);
       MathElement.jQize(block.join('html')).insertBefore(self.jQ);
       self[L] = block.ends[R];

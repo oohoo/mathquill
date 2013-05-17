@@ -46,10 +46,48 @@ var latexMathParser = (function() {
   ;
 
   var matrixCommand =
-    regex(/^\\begin{matrix}.*\\end{matrix}$/)
+    regex(/^\\begin{matrix}/)
+    .then(regex(/^(.*)\\end{matrix}/))
     .then(function(a) {
-      console.log('Matrix Command: ' + a);
-      return Parser.succeed(LatexCmds.matrix());
+      // Strip out the trailing command (\end{matrix})
+      var content = a.replace(/\\end{matrix}/, '');
+
+      // Retrieve the matrix command
+      var cmd = LatexCmds.matrix();
+
+      // Parse the individual blocks within the matrix
+      // Refer to http://en.wikibooks.org/wiki/LaTeX/Mathematics to learn more about the LaTeX
+      // matrix notation.
+      // Basically rows are delimited by double backslashes and columns by ampersands
+      var blocks = [];
+      var rows = content.split('\\\\');
+      for(var i = 0; i < rows.length; i++) {
+        // We have a row, now split it into its respective columns
+        var columns = rows[i].split('&amp;');
+        for(var a = 0; a < columns.length; a++) {
+          // Parse the individual block, this block may contain other more complicated commands
+          // like a square root, we delegate the parsing of this to the Parser object. It returns
+          // a MathElement block object which is the object representation of the formula.
+          var block = latexMathParser.parse(columns[a]);
+          blocks.push(block);
+        }
+      }
+
+      // Tell our Latex.matrix command how big our matrix is, recall that MatrixSize is simply an
+      // alias for LatexCmds.matrix.setSize
+      MatrixSize(rows.length, columns.length);
+
+      // Attach the child blocks (each element of the matrix) to the parent matrix object
+      cmd.blocks = blocks;
+      for (var i = 0; i < blocks.length; i += 1) {
+        blocks[i].adopt(cmd, cmd.ends[R], 0);
+      }
+      // The block elements attached to a command are each rendered and then they replace the
+      // '&0', '&1', '&2', '&3'... placeholders that are found within the command's htmlTemplate
+
+      // Return the Latex.matrix() object to the main parser so that it knows to render this
+      // particular portion of latex in this fashion
+      return Parser.succeed(cmd);
     })
   ;
 

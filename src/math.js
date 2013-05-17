@@ -20,9 +20,9 @@ var MathElement = P(Node, function(_, _super) {
     MathElement[this.id] = this;
   };
 
-  _.toString = function() {
-    return '[MathElement '+this.id+']';
-  };
+  //_.toString = function() {
+  //  return '[MathElement '+this.id+']';
+  //};
 
   _.bubble = function(event /*, args... */) {
     var args = __slice.call(arguments, 1);

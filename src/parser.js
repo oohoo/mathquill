@@ -20,8 +20,6 @@ var Parser = P(function(_, _super, Parser) {
   _.init = function(body) { this._ = body; };
 
   _.parse = function(stream) {
-    console.log('STREAM : ' + stream);
-    console.log(_);
     return this.skip(eof)._(stream, success, parseError);
 
     function success(stream, result) { return result; }
@@ -177,7 +175,6 @@ var Parser = P(function(_, _super, Parser) {
   };
 
   var fail = Parser.fail = function(msg) {
-    console.log('PARSER FAILURE: ' + msg);
     return Parser(function(stream, _, onFailure) {
       return onFailure(stream, msg);
     });

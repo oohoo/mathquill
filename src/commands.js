@@ -797,9 +797,7 @@ LatexCmds.matrix = P(MathCommand, function(_, _super) {
     matrix += '</table>';
     _.htmlTemplate = matrix;
   };
-  _.parser = function() {
-    console.log('okay');
-  };
+  _.parser = function() { return Parser.succeed(this); };
 });
 
 var Choose =
