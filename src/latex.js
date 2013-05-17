@@ -63,7 +63,7 @@ var latexMathParser = (function() {
       var rows = content.split('\\\\');
       for(var i = 0; i < rows.length; i++) {
         // We have a row, now split it into its respective columns
-        var columns = rows[i].split('&amp;');
+        var columns = rows[i].split('&');
         for(var a = 0; a < columns.length; a++) {
           // Parse the individual block, this block may contain other more complicated commands
           // like a square root, we delegate the parsing of this to the Parser object. It returns
