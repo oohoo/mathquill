@@ -80,24 +80,6 @@ jQuery.fn.mathquill = function(cmd, latex) {
   }
 };
 
-/**
- * Sets the matrix size that will be output by the '\\matrix' command. {@code MatrixSize} is a
- * variable that points to the {@code LatexCmds.matrix->setSize} method (NOTE: There are a bunch
- * of closures in play which is why we can't simply call {@code LatexCmds.matrix.setSize(..)}).
- * The {@code MatrixSize} variable is defined in the {@code commands.js} file.
- *
- * Ensure to call this function BEFORE inserting a '\\matrix' command.
- *
- * The {@code MathQuill} object is defined in the intro.js file outside the anonymous function
- * declaration in order to make it visible publically.
- *
- * @param rows the number of rows in the matrix
- * @param cols the number of columns in the matrix
- */
-MathQuill.setMatrixSize = function(rows, cols) {
-  MatrixSize(rows, cols);
-};
-
 //on document ready, mathquill-ify all `<tag class="mathquill-*">latex</tag>`
 //elements according to their CSS class.
 jQuery(function() {
