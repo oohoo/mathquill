@@ -176,6 +176,7 @@ function createRoot(jQ, root, textbox, editable) {
       cursor.show();
     e.stopPropagation();
   }).blur(function(e) {
+    alert('blurred');
     cursor.hide().parent.blur();
     if (cursor.selection)
       cursor.selection.jQ.addClass('blur');
@@ -185,6 +186,7 @@ function createRoot(jQ, root, textbox, editable) {
   jQ.bind('focus.mathquill blur.mathquill', function(e) {
     textarea.trigger(e);
   }).bind('click.mathquill', function(e) {
+    // This activates the keyboard on mobile devices
     textarea.focus();
   })
   .blur();
@@ -378,6 +380,7 @@ var RootMathBlock = P(MathBlock, function(_, _super) {
           character = character.toLowerCase();
         }
         this.cursor.write(character);
+        e.preventDefault();
       }
       return false;
     }
