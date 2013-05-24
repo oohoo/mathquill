@@ -176,7 +176,6 @@ function createRoot(jQ, root, textbox, editable) {
       cursor.show();
     e.stopPropagation();
   }).blur(function(e) {
-    alert('blurred');
     cursor.hide().parent.blur();
     if (cursor.selection)
       cursor.selection.jQ.addClass('blur');

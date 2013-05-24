@@ -53,7 +53,7 @@ var Cursor = P(Point, function(_) {
     this.parent = parent;
     this[dir] = withDir;
     this[-dir] = oppDir;
-    //oldParent.blur();
+    oldParent.blur();
   };
   _.insDirOf = function(dir, el) {
     prayDirection(dir);
