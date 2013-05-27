@@ -368,19 +368,6 @@ var RootMathBlock = P(MathBlock, function(_, _super) {
       break;
 
     default:
-      console.log(e);
-      // Within a mobile browser there are quirky things happening with the keyboard not showing up
-      // correctly when selecting certain areas of the equation. As a solution, we simply intercept
-      // all key presses and forward the key pressed to the cursor object which writes it at its
-      // position. This is a bit hacky but it works within Safari and Chrome for iPad.
-      if(typeof window.orientation !== 'undefined'){
-        var character = String.fromCharCode(e.which);
-        if(!e.shiftKey) {
-          character = character.toLowerCase();
-        }
-        this.cursor.write(character);
-        e.preventDefault();
-      }
       return false;
     }
     e.preventDefault();
