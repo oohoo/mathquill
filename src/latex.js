@@ -91,10 +91,18 @@ var latexMathParser = (function() {
     })
   ;
 
+  // When giving invalid LaTeX, ensure that the equation doesn't dissapear
+  var unknown =
+    regex(/^[\\|_|\^|{]((?!right))/).then(function(a) {
+      return Parser.succeed(LatexCmds.blank());
+    })
+  ;
+
   var command = controlSequence
     .or(matrixCommand)
     .or(variable)
     .or(symbol)
+    .or(unknown)
   ;
 
   // Parsers yielding MathBlocks

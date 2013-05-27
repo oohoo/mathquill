@@ -740,6 +740,14 @@ LatexCmds.binomial = P(MathCommand, function(_, _super) {
   };
 });
 
+// Blank command for invalid LaTeX, simply renders nothing on the screen instead of making the
+// whole equation crash
+var Blank = null;
+var Blank =
+LatexCmds.blank = P(MathCommand, function(_, _super) {
+  _.htmlTemplate = '';
+});
+
 // Pointer to the setSize() function in order to make it more easily accessible outside the closure
 var MatrixSize = null;
 var Matrix =
