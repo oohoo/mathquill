@@ -322,7 +322,7 @@ LatexCmds['∑'] = LatexCmds.sum = LatexCmds.summation = bind(BigSymbol,'\\sum '
 LatexCmds['∏'] = LatexCmds.prod = LatexCmds.product = bind(BigSymbol,'\\prod ','&prod;');
 LatexCmds.coprod = LatexCmds.coproduct = bind(BigSymbol,'\\coprod ','&#8720;');
 LatexCmds['∫'] = LatexCmds['int'] = LatexCmds.integral = bind(BigSymbol,'\\int ','&int;');
-
+LatexCmds.oint = bind(BigSymbol, '\\oint ', '&#8750;');
 
 
 //the canonical sets of numbers
@@ -451,7 +451,6 @@ LatexCmds.heartsuit = bind(VanillaSymbol, '\\heartsuit ', '&#9825;');
 LatexCmds.spadesuit = bind(VanillaSymbol, '\\spadesuit ', '&#9824;');
 
 //variable-sized
-LatexCmds.oint = bind(VanillaSymbol, '\\oint ', '&#8750;');
 LatexCmds.bigcap = bind(VanillaSymbol, '\\bigcap ', '&#8745;');
 LatexCmds.bigcup = bind(VanillaSymbol, '\\bigcup ', '&#8746;');
 LatexCmds.bigsqcup = bind(VanillaSymbol, '\\bigsqcup ', '&#8852;');
