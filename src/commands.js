@@ -745,7 +745,7 @@ LatexCmds.binomial = P(MathCommand, function(_, _super) {
 var Blank = null;
 var Blank =
 LatexCmds.blank = P(MathCommand, function(_, _super) {
-  _.htmlTemplate = '';
+  _.htmlTemplate = '&#xfffd';
 });
 
 var LimitCmds = [];
