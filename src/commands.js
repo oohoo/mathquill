@@ -748,9 +748,42 @@ LatexCmds.blank = P(MathCommand, function(_, _super) {
   _.htmlTemplate = '';
 });
 
-var Limit = null;
-var Limit =
-LatexCmds.lim = P(MathCommand, function(_, _super) {
+var LimitCmds = [];
+
+var UpperLowerLimits = P(MathCommand, function(_, _super) {
+  _.init = function(ctrlSeq, character) {
+    var output = '<table class="mtable non-leaf">'
+    +   '<tr class="mtr non-leaf">'
+    +     '<td class="mtd limits"><span>&0</span></td>'
+    +   '</tr>'
+    +   '<tr class="mtr non-leaf">'
+    +     '<td class="mtd"><big>' + character + '</big></td>'
+    +    '</tr><tr class="mtr non-leaf">'
+    +     '<td class="mtd limits"><span>&1</span></td>'
+    +   '</tr>'
+    + '</table>'
+    ;
+    _super.init.call(this, ctrlSeq, output, []);
+  };
+  _.latex = function() {
+    var children = this.foldChildren([], function(latex, child) {
+      latex.push(child.latex());
+      return latex;
+    });
+    var string = this.ctrlSeq + '_{';
+    string += children[0];
+    string += '}^{';
+    string += children[1];
+    string += '}';
+    return string;
+  };
+  _.parser = function() { return Parser.succeed(this); };
+});
+var Sum = LimitCmds.sum = bind(UpperLowerLimits, '\\sum', '&sum;');
+var Prod = LimitCmds.prod = bind(UpperLowerLimits, '\\prod', '&prod;');
+var Coprod = LimitCmds.coprod = bind(UpperLowerLimits, '\\coprod', '&#8720;');
+
+var Limit = P(MathCommand, function(_, _super) {
   _.ctrlSeq = '\\lim';
   _.htmlTemplate =
     '<table class="mtable non-leaf">'

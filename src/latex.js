@@ -36,7 +36,7 @@ var latexMathParser = (function() {
     )).then(function(ctrlSeq) {
       var cmdKlass = LatexCmds[ctrlSeq];
 
-      if (cmdKlass && ctrlSeq !== 'lim') {
+      if (cmdKlass) {
         return cmdKlass(ctrlSeq).parser();
       }
       else {
@@ -95,12 +95,10 @@ var latexMathParser = (function() {
     regex(/^\\lim_\{/)
     .then(regex(/^(.*)\}/))
     .then(function(a) {
-      console.log('We have: ' + a);
       // Retrieve the limit command
-      var cmd = LatexCmds.lim();
+      var cmd = Limit();
 
       var content = a.replace(/\}/g, '');
-      console.log('Limit Content: ' + content);
 
       var block = latexMathParser.parse(content);
       cmd.blocks = [];
@@ -111,16 +109,43 @@ var latexMathParser = (function() {
     })
   ;
 
+  var sumProductCommand =
+    regex(/^\\(sum|prod|coprod)_\{(.*)\}\^\{(.*)\}/)
+    .then(function(content) {
+      console.log('Content: ' + content);
+      var components = content.match(/^\\(sum|prod|coprod)_\{(.*)\}\^\{(.*)\}/);
+
+      console.log(components);
+
+      // Strip off the leading backslash and retrieve command
+      var command = components[1].replace(/^\\/, '');
+      var cmd = LimitCmds[command]();
+
+      // Parse children
+      var subscript = latexMathParser.parse(components[2]);
+      var superscript = latexMathParser.parse(components[3]);
+
+      cmd.blocks = [];
+      cmd.blocks.push(subscript);
+      cmd.blocks.push(superscript);
+      cmd.blocks[0].adopt(cmd, cmd.ends[R], 0);
+      cmd.blocks[1].adopt(cmd, cmd.ends[R], 0);
+
+      return Parser.succeed(cmd);
+    })
+  ;
+
   // When giving invalid LaTeX, ensure that the equation doesn't dissapear
   var unknown =
-    regex(/^[\\|_|\^|{]((?!right))/).then(function(a) {
+    regex(/^[\\|_|\^|\{]((?!right))/).then(function() {
       return Parser.succeed(LatexCmds.blank());
     })
   ;
 
-  var command = controlSequence
+  var command = sumProductCommand
     .or(matrixCommand)
     .or(limitCommand)
+    .or(controlSequence)
     .or(variable)
     .or(symbol)
     .or(unknown)
