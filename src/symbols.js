@@ -599,8 +599,8 @@ LatexCmds.mod =
 LatexCmds.lcm =
 LatexCmds.gcd =
 LatexCmds.gcf =
-LatexCmds.hcf =
-LatexCmds.lim = NonItalicizedFunction;
+LatexCmds.hcf = NonItalicizedFunction;
+//LatexCmds.lim = NonItalicizedFunction;
 
 (function() {
   var trig = ['sin', 'cos', 'tan', 'sec', 'cosec', 'csc', 'cotan', 'cot'];

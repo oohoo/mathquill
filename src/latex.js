@@ -36,7 +36,7 @@ var latexMathParser = (function() {
     )).then(function(ctrlSeq) {
       var cmdKlass = LatexCmds[ctrlSeq];
 
-      if (cmdKlass) {
+      if (cmdKlass && ctrlSeq !== 'lim') {
         return cmdKlass(ctrlSeq).parser();
       }
       else {
@@ -91,6 +91,26 @@ var latexMathParser = (function() {
     })
   ;
 
+  var limitCommand =
+    regex(/^\\lim_\{/)
+    .then(regex(/^(.*)\}/))
+    .then(function(a) {
+      console.log('We have: ' + a);
+      // Retrieve the limit command
+      var cmd = LatexCmds.lim();
+
+      var content = a.replace(/\}/g, '');
+      console.log('Limit Content: ' + content);
+
+      var block = latexMathParser.parse(content);
+      cmd.blocks = [];
+      cmd.blocks.push(block);
+      cmd.blocks[0].adopt(cmd, cmd.ends[R], 0);
+
+      return Parser.succeed(cmd);
+    })
+  ;
+
   // When giving invalid LaTeX, ensure that the equation doesn't dissapear
   var unknown =
     regex(/^[\\|_|\^|{]((?!right))/).then(function(a) {
@@ -100,6 +120,7 @@ var latexMathParser = (function() {
 
   var command = controlSequence
     .or(matrixCommand)
+    .or(limitCommand)
     .or(variable)
     .or(symbol)
     .or(unknown)

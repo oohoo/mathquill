@@ -748,6 +748,34 @@ LatexCmds.blank = P(MathCommand, function(_, _super) {
   _.htmlTemplate = '';
 });
 
+var Limit = null;
+var Limit =
+LatexCmds.lim = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\lim';
+  _.htmlTemplate =
+    '<table class="mtable non-leaf">'
+    +   '<tr class="mtr non-leaf">'
+    +     '<td class="mtd">lim</td>'
+    +    '</tr><tr class="mtr non-leaf">'
+    +     '<td class="mtd limits"><span>&0</span></td>'
+    +   '</tr>'
+    + '</table>'
+  ;
+  _.latex = function() {
+    var children = this.foldChildren([], function(latex, child) {
+      latex.push(child.latex());
+      return latex;
+    });
+    var string = '\\lim_{';
+    for(var i = 0; i < children.length; i++) {
+      string += children[i];
+    }
+    string += '}';
+    return string;
+  };
+  _.parser = function() { return Parser.succeed(this); };
+});
+
 // Pointer to the setSize() function in order to make it more easily accessible outside the closure
 var MatrixSize = null;
 var Matrix =
