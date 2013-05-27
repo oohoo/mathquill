@@ -112,10 +112,7 @@ var latexMathParser = (function() {
   var sumProductCommand =
     regex(/^\\(sum|prod|coprod)_\{(.*)\}\^\{(.*)\}/)
     .then(function(content) {
-      console.log('Content: ' + content);
       var components = content.match(/^\\(sum|prod|coprod)_\{(.*)\}\^\{(.*)\}/);
-
-      console.log(components);
 
       // Strip off the leading backslash and retrieve command
       var command = components[1].replace(/^\\/, '');
