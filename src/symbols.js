@@ -552,6 +552,10 @@ LatexCmds.xist = //LOL
 LatexCmds.xists = LatexCmds.exist = LatexCmds.exists =
   bind(VanillaSymbol,'\\exists ','&exist;');
 
+  LatexCmds.nxist = //LOL
+LatexCmds.nxists = LatexCmds.nexist = LatexCmds.nexists =
+  bind(VanillaSymbol,'\\nexists ','&#x2204;');
+
 LatexCmds.and = LatexCmds.land = LatexCmds.wedge =
   bind(VanillaSymbol,'\\wedge ','&and;');
 
