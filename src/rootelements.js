@@ -49,6 +49,10 @@ function createRoot(jQ, root, textbox, editable) {
   //drag-to-select event handling
   var anticursor, blink = cursor.blink;
   jQ.bind('mousedown.mathquill', function(e) {
+    // For mobile - for some reason it does not bring up the keyboard for a mousedown event so we
+    // simply force the keyboard by focusing the text area
+    textarea.focus();
+
     function mousemove(e) {
       cursor.seek($(e.target), e.pageX, e.pageY);
 
