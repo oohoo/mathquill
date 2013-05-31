@@ -47,7 +47,7 @@ var latexMathParser = (function() {
 
   var matrixCommand =
     regex(/^\\begin{matrix}/)
-    .then(regex(/^(.*)\\end{matrix}/))
+    .then(regex(/^(.[^}])\\end{matrix}/))
     .then(function(a) {
       // Strip out the trailing command (\end{matrix})
       var content = a.replace(/\\end{matrix}/, '');
@@ -93,7 +93,7 @@ var latexMathParser = (function() {
 
   var limitCommand =
     regex(/^\\lim_\{/)
-    .then(regex(/^(.*)\}/))
+    .then(regex(/^([^}]*)\}/))
     .then(function(a) {
       // Retrieve the limit command
       var cmd = Limit();
@@ -110,9 +110,9 @@ var latexMathParser = (function() {
   ;
 
   var sumProductCommand =
-    regex(/^\\(sum|prod|coprod)_\{(.*)\}\^\{(.*)\}/)
+    regex(/^\\(sum|prod|coprod)_\{([^}]*)\}\^\{([^}]*)\}/)
     .then(function(content) {
-      var components = content.match(/^\\(sum|prod|coprod)_\{(.*)\}\^\{(.*)\}/);
+      var components = content.match(/^\\(sum|prod|coprod)_\{([^}]*)\}\^\{([^}]*)\}/);
 
       // Strip off the leading backslash and retrieve command
       var command = components[1].replace(/^\\/, '');
