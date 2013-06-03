@@ -47,7 +47,7 @@ var latexMathParser = (function() {
 
   var matrixCommand =
     regex(/^\\begin{matrix}/)
-    .then(regex(/^(.[^}])\\end{matrix}/))
+    .then(regex(/^(.*?)\\end{matrix}/))
     .then(function(a) {
       // Strip out the trailing command (\end{matrix})
       var content = a.replace(/\\end{matrix}/, '');
