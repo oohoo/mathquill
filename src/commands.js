@@ -808,6 +808,28 @@ var Limit = P(MathCommand, function(_, _super) {
   };
   _.parser = function() { return Parser.succeed(this); };
 });
+ // Color command
+var Color = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\color';
+  _.htmlTemplate =
+    '<span class="non-leaf" style="color:red">'
+    + '<span>&0</span>'
+    + '</span>'
+  ;
+  _.latex = function() {
+    var children = this.foldChildren([], function(latex, child) {
+      latex.push(child.latex());
+      return latex;
+    });
+    var string = '\\color{' + this.color + '}{';
+    for(var i = 0; i < children.length; i++) {
+      string += children[i];
+    }
+    string += '}';
+    return string;
+  };
+  _.parser = function() { return Parser.succeed(this); };
+});
 
 // Pointer to the setSize() function in order to make it more easily accessible outside the closure
 var MatrixSize = null;

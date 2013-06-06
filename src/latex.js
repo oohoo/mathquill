@@ -91,6 +91,31 @@ var latexMathParser = (function() {
     })
   ;
 
+  // Color command
+  var colorCommand =
+    regex(/^\\color{([a-zA-Z]*)}{([^}]*)}/)
+    .then(function(a) {
+      var cmd = Color();
+
+      var regex = /^\\color{([a-zA-Z]*)}{([^}]*)}/;
+      var match = regex.exec(a);
+
+      var block = latexMathParser.parse(match[2]);
+      cmd.blocks = [];
+      cmd.blocks.push(block);
+      cmd.blocks[0].adopt(cmd, cmd.ends[R], 0);
+
+      cmd.color = match[1];
+
+      cmd.htmlTemplate =
+      '<span class="non-leaf" style="color:'+ match[1] +'">'
+      + '<span>&0</span>'
+      + '</span>';
+
+      return Parser.succeed(cmd);
+    })
+  ;
+
   var limitCommand =
     regex(/^\\lim_\{/)
     .then(regex(/^([^}]*)\}/))
@@ -142,6 +167,7 @@ var latexMathParser = (function() {
   var command = sumProductCommand
     .or(matrixCommand)
     .or(limitCommand)
+    .or(colorCommand)
     .or(controlSequence)
     .or(variable)
     .or(symbol)
