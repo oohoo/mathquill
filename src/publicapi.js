@@ -70,6 +70,22 @@ jQuery.fn.mathquill = function(cmd, latex) {
           cursor.hide().parent.blur();
         }
       });
+    case 'color':
+    if (arguments.length > 1) {
+      return this.each(function() {
+        var blockId = $(this).attr(mqBlockId),
+        block = blockId && MathElement[blockId],
+        cursor = block && block.cursor;
+        var selection = cursor.selection;
+        var selectionLatex = cursor.selection.latex();
+        selection.ends[L].ctrlSeq = '_!_@' + selection.ends[L].ctrlSeq;
+        var currentLatex = block.latex();
+
+        currentLatex = currentLatex.replace('_!_@' + selectionLatex, '\\color{' + latex + '}{' + selectionLatex + '}');
+        
+        block.renderLatex(currentLatex);
+      });
+    }
     default:
     var textbox = cmd === 'textbox',
     editable = textbox || cmd === 'editable',
