@@ -93,26 +93,19 @@ var latexMathParser = (function() {
 
   // Color command
   var colorCommand =
-    regex(/^\\color{([a-zA-Z]*)}{([^}]*)}/)
-    .then(function(a) {
+    regex(/^\\color/)
+    .then(regex(/^{[a-zA-Z]*}/))
+    .then(function(color) {
       var cmd = Color();
-
-      var regex = /^\\color{([a-zA-Z]*)}{([^}]*)}/;
-      var match = regex.exec(a);
-
-      var block = latexMathParser.parse(match[2]);
-      cmd.blocks = [];
-      cmd.blocks.push(block);
-      cmd.blocks[0].adopt(cmd, cmd.ends[R], 0);
-
-      cmd.color = match[1];
+      color = color.replace(/{|}/g, '');
+      cmd.color = color;
 
       cmd.htmlTemplate =
-      '<span class="non-leaf" style="color:'+ match[1] +'">'
-      + '<span>&0</span>'
-      + '</span>';
+        '<span class="non-leaf" style="color:'+ color +'">'
+        + '<span>&0</span>'
+        + '</span>';
 
-      return Parser.succeed(cmd);
+      return cmd.parser();
     })
   ;
 

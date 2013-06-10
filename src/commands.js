@@ -828,7 +828,6 @@ var Color = P(MathCommand, function(_, _super) {
     string += '}';
     return string;
   };
-  _.parser = function() { return Parser.succeed(this); };
 });
 
 // Pointer to the setSize() function in order to make it more easily accessible outside the closure
