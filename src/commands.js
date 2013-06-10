@@ -890,6 +890,40 @@ LatexCmds.matrix = P(MathCommand, function(_, _super) {
   _.parser = function() { return Parser.succeed(this); };
 });
 
+var Bold = LatexCmds.textbf = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\textbf';
+  _.htmlTemplate = '<span class="bold">&0</span>';
+  _.latex = function() {
+    var children = this.foldChildren([], function(latex, child) {
+      latex.push(child.latex());
+      return latex;
+    });
+    var string = '\\textbf{';
+    for(var i = 0; i < children.length; i++) {
+      string += children[i];
+    }
+    string += '}';
+    return string;
+  };
+});
+
+var Italic = LatexCmds.emph = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\emph';
+  _.htmlTemplate = '<span class="italic">&0</span>';
+  _.latex = function() {
+    var children = this.foldChildren([], function(latex, child) {
+      latex.push(child.latex());
+      return latex;
+    });
+    var string = '\\emph{';
+    for(var i = 0; i < children.length; i++) {
+      string += children[i];
+    }
+    string += '}';
+    return string;
+  };
+});
+
 var Choose =
 LatexCmds.choose = P(Binomial, function(_) {
   _.createLeftOf = LiveFraction.prototype.createLeftOf;

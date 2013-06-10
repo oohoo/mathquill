@@ -71,7 +71,7 @@ jQuery.fn.mathquill = function(cmd, latex) {
         }
       });
     case 'color':
-    if (arguments.length > 1) {
+    if (arguments.length > 1)
       return this.each(function() {
         var blockId = $(this).attr(mqBlockId),
         block = blockId && MathElement[blockId],
@@ -85,7 +85,36 @@ jQuery.fn.mathquill = function(cmd, latex) {
         
         block.renderLatex(currentLatex);
       });
-    }
+    case 'bold':
+    console.log('Inside bold');
+    return this.each(function() {
+        console.log('okay!');
+        var blockId = $(this).attr(mqBlockId),
+        block = blockId && MathElement[blockId],
+        cursor = block && block.cursor;
+        var selection = cursor.selection;
+        var selectionLatex = cursor.selection.latex();
+        selection.ends[L].ctrlSeq = '_!_@' + selection.ends[L].ctrlSeq;
+        var currentLatex = block.latex();
+
+        currentLatex = currentLatex.replace('_!_@' + selectionLatex, '\\textbf{' + selectionLatex + '}');
+        
+        block.renderLatex(currentLatex);
+    });
+    case 'italic':
+    return this.each(function() {
+        var blockId = $(this).attr(mqBlockId),
+        block = blockId && MathElement[blockId],
+        cursor = block && block.cursor;
+        var selection = cursor.selection;
+        var selectionLatex = cursor.selection.latex();
+        selection.ends[L].ctrlSeq = '_!_@' + selection.ends[L].ctrlSeq;
+        var currentLatex = block.latex();
+
+        currentLatex = currentLatex.replace('_!_@' + selectionLatex, '\\emph{' + selectionLatex + '}');
+        
+        block.renderLatex(currentLatex);
+    });
     default:
     var textbox = cmd === 'textbox',
     editable = textbox || cmd === 'editable',
