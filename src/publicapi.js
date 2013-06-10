@@ -86,9 +86,7 @@ jQuery.fn.mathquill = function(cmd, latex) {
         block.renderLatex(currentLatex);
       });
     case 'bold':
-    console.log('Inside bold');
     return this.each(function() {
-        console.log('okay!');
         var blockId = $(this).attr(mqBlockId),
         block = blockId && MathElement[blockId],
         cursor = block && block.cursor;
