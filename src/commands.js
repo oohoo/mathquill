@@ -313,6 +313,31 @@ LatexCmds['hat'] = P(MathCommand, function(_, _super) {
   _.textTemplate = ['hat{', '}'];
 });
 
+var Overline =
+LatexCmds.overline =
+LatexCmds['overline'] = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\overline';
+  _.htmlTemplate =
+      '<span class="non-leaf">'
+    +   '<span class="overline">&0</span>'
+    + '</span>'
+  ;
+  _.textTemplate = ['overline{', '}'];
+});
+
+var Bar =
+LatexCmds.bar =
+LatexCmds['bar'] = P(MathCommand, function(_, _super) {
+  _.ctrlSeq = '\\bar';
+  _.htmlTemplate =
+      '<span class="non-leaf">'
+    +   '<span class="bar-prefix">&#x203E;</span>'
+    +   '<span class="vector-stem">&0</span>'
+    + '</span>'
+  ;
+  _.textTemplate = ['bar{', '}'];
+});
+
 // Round/Square/Curly/Angle Brackets (aka Parens/Brackets/Braces)
 var Bracket = P(MathCommand, function(_, _super) {
   _.init = function(open, close, ctrlSeq, end) {
