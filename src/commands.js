@@ -1091,3 +1091,19 @@ LatexCmds.editable = P(RootMathCommand, function(_, _super) {
   _.latex = function(){ return this.ends[L].latex(); };
   _.text = function(){ return this.ends[L].text(); };
 });
+
+LatexCmds.placeholder = P(RootMathCommand, function(_, _super) {
+  _.ctrlSeq = '\\placeholder';
+  _.htmlTemplate = '<span>&0</span>';
+  _.latex = function() {
+    var children = this.foldChildren([], function(latex, child) {
+      latex.push(child.latex());
+      return latex;
+    });
+    var string = '';
+    for(var i = 0; i < children.length; i++) {
+      string += children[i];
+    }
+    return string;
+  };
+});

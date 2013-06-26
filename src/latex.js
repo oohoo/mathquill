@@ -157,7 +157,20 @@ var latexMathParser = (function() {
     })
   ;
 
-  var command = sumProductCommand
+  var placeholder =
+    regex(/^\\placeholder/).then(function(a) {
+      console.log(a);
+      var cmd = LatexCmds.placeholder();
+      var blank = latexMathParser.parse('');
+      cmd.blocks = [];
+      cmd.blocks.push(blank);
+      cmd.blocks[0].adopt(cmd, cmd.ends[R], 0);
+      return Parser.succeed(cmd);
+    })
+  ;
+
+  var command = placeholder
+    .or(sumProductCommand)
     .or(matrixCommand)
     .or(limitCommand)
     .or(colorCommand)
