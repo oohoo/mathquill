@@ -45,7 +45,7 @@ CLEAN += $(DIST)
 
 # programs and flags
 UGLIFY ?= ./node_modules/.bin/uglifyjs
-UGLIFY_OPTS ?= --lift-vars
+UGLIFY_OPTS ?= --mangle --compress hoist_vars=true
 
 LESSC ?= ./node_modules/.bin/lessc
 LESS_OPTS ?=
@@ -91,9 +91,11 @@ $(DIST): $(UGLY_JS) $(BUILD_JS) $(BUILD_CSS) $(FONT_TARGET)
 # -*- Test tasks -*-
 #
 
-.PHONY: test server
+.PHONY: test server run-server
 server:
-	./node_modules/.bin/supervisor -e js,less,Makefile .
+	./node_modules/.bin/supervisor -e js,less,Makefile -x make run-server
+run-server: test
+	node script/test_server.js
 test: dev $(BUILD_TEST)
 	@echo
 	@echo "** now open test/{unit,visual}.html in your browser to run the {unit,visual} tests. **"
