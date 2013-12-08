@@ -113,6 +113,16 @@ jQuery.fn.mathquill = function(cmd, latex) {
         
         block.renderLatex(currentLatex);
     });
+    case 'selectPrevBlock':
+      return this.each(function() {
+        var blockId = $(this).attr(mqBlockId),
+        block = blockId && MathElement[blockId],
+        cursor = block && block.cursor;
+        //Only select if not already selected
+        if (typeof cursor.selection === 'undefined') {
+          cursor.selectLeft();
+        }
+      });
     default:
     var textbox = cmd === 'textbox',
     editable = textbox || cmd === 'editable',
